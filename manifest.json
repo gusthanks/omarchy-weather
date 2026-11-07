@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "gusthx.weather",
+  "name": "Weather Plus",
+  "version": "1.1.0",
+  "author": "Gustavo Costa",
+  "description": "Lightweight weather pill with rain forecast, hourly strip, UV, sunrise/sunset and live radar link",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Weather Plus",
+    "description": "Weather pill with detail popup, rain summary and hourly forecast",
+    "category": "Info",
+    "allowMultiple": false,
+    "settingsForm": "weatherSettings"
+  },
+  "omarchy": {
+    "clonedFrom": "omarchy.weather"
+  }
+}
