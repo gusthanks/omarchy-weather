@@ -13,24 +13,34 @@ id="$(jq -r .id "$repo/manifest.json")"
 live="${OMARCHY_PLUGIN_DIR:-$HOME/.config/omarchy/plugins}/$id"
 branch="$(git -C "$repo" branch --show-current)"
 
+[[ -n $branch ]] || { echo "Check out a branch first (deploy installs that branch, HEAD is detached)." >&2; exit 1; }
 [[ -z $(git -C "$repo" status --porcelain) ]] || { echo "Commit your changes first (deploy installs HEAD)." >&2; exit 1; }
 omarchy plugin validate "$repo"
 "$repo/dev/run.sh" check >/dev/null || { "$repo/dev/run.sh" check; echo "QML does not compile; not deploying." >&2; exit 1; }
 
-if [[ -d $live && ! -d $live/.git ]]; then
-  backup="$HOME/Work/backups/$id.$(date +%Y%m%d-%H%M%S)"
-  mkdir -p "$(dirname "$backup")"
-  mv "$live" "$backup"
-  echo "Backed up the plain copy at $live to $backup"
-fi
-
 if [[ -d $live/.git ]]; then
   git -C "$live" pull --ff-only -q "$repo" "$branch"
 else
-  git clone -q --branch "$branch" "$repo" "$live"
+  # Build the checkout outside the plugins folder first (the shell would load
+  # a second copy there), so a failed clone leaves the live plugin untouched;
+  # then swap it in.
+  new="$HOME/Work/backups/.$id.new"
+  rm -rf "$new"
+  mkdir -p "$(dirname "$new")"
+  git clone -q --branch "$branch" "$repo" "$new"
   # Keep `omarchy plugin update` pointing at GitHub when the repo has a remote.
   url="$(git -C "$repo" remote get-url origin 2>/dev/null || true)"
-  [[ -n $url ]] && git -C "$live" remote set-url origin "$url"
+  [[ -n $url ]] && git -C "$new" remote set-url origin "$url"
+  if [[ -d $live ]]; then
+    backup="$HOME/Work/backups/$id.$(date +%Y%m%d-%H%M%S)"
+    mkdir -p "$(dirname "$backup")"
+    mv "$live" "$backup"
+    # If the swap fails, put the plain copy back.
+    trap '[[ -d $live ]] || mv "$backup" "$live"' EXIT
+    echo "Backed up the plain copy at $live to $backup"
+  fi
+  mv "$new" "$live"
+  trap - EXIT
 fi
 echo "Deployed $(git -C "$repo" log --oneline -1) to $live"
 

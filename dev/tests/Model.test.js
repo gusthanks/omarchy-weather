@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
@@ -490,6 +490,16 @@ describe('gusthx.weather Model.js', () => {
       for (const code of ['pt', 'es', 'fr', 'de', 'it']) {
         const keys = Object.keys(catalog(code))
         expect(en.filter(k => !keys.includes(k)), code).toEqual([])
+      }
+    })
+    it('every catalog is a flat object of known keys', () => {
+      // English keys plus language-only ones the code asks for (weather.rainAroundOne).
+      const source = ['Model.js', 'Panel.qml', 'WeatherView.qml', 'BarWidget.qml']
+        .map(f => readFileSync(join(root, f), 'utf8')).join('\n')
+      const known = k => k in catalog('en') || source.includes('"' + k + '"')
+      for (const file of readdirSync(join(root, 'i18n'))) {
+        const strings = catalog(file.replace(/\.json$/, ''))
+        expect(Object.keys(strings).filter(k => !known(k) || typeof strings[k] !== 'string'), file).toEqual([])
       }
     })
   })

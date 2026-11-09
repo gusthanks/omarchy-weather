@@ -25,8 +25,8 @@ its look, its location search and its keyboard behavior.
 - **Open live radar**: opens [RainViewer](https://www.rainviewer.com/) at your coordinates in
   your browser.
 - **Your language and units**: strings follow the language picked in Omarchy's setup
-  (English, Portuguese, Spanish, French, German and Italian are included; anything else
-  falls back to English). Hours, °C/°F and km/h or mph follow your locale and the place.
+  (English, Portuguese, Spanish, French, German and Italian are complete; the other languages
+  Omarchy ships get the stock widget's labels, with the newer lines in English). Hours, °C/°F and km/h or mph follow your locale and the place.
 - **Location search**: click the place name (top left) to search for a city, as in the
   stock widget. Empty means "detect it for me".
 
