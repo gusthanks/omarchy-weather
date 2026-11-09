@@ -82,9 +82,6 @@ From a keybinding or script:
 omarchy-shell gusthx.weather toggle   # also: open, close, edit (jump into the search)
 ```
 
-The popup also answers on the stock target (`omarchy-shell omarchy.weather toggle`), so
-bindings written for the stock widget keep working.
-
 ## Configuration
 
 - **Location**: click the place name in the popup, or use Omarchy's helper:

@@ -9,9 +9,7 @@ import "Model.js" as Model
 Panel {
   id: root
   moduleName: "gusthx.weather"
-  // Also answers on the stock widget's target, so keybindings written for
-  // omarchy.weather keep working (run one weather widget, not both).
-  ipcTarget: "omarchy.weather"
+  ipcTarget: "gusthx.weather"
   manageIpc: false
 
   property var anchorItem: null
@@ -545,17 +543,6 @@ Panel {
 
   ShellIpc {
     target: root.ipcTarget
-
-    function open(): void { root.openFromHotkey() }
-    function close(): void { root.close() }
-    function show(): void { root.openFromHotkey() }
-    function hide(): void { root.close() }
-    function toggle(): void { root.toggle() }
-    function edit(): void { root.openFromHotkey(); root.startEditingLocation() }
-  }
-
-  ShellIpc {
-    target: "gusthx.weather"
 
     function open(): void { root.openFromHotkey() }
     function close(): void { root.close() }
