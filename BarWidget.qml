@@ -4,7 +4,7 @@ import qs.Ui
 
 BarWidget {
   id: root
-  moduleName: "omarchy.weather"
+  moduleName: "gusthx.weather"
 
   function injectPanel() {
     var target = panelLoader.item
@@ -83,20 +83,10 @@ BarWidget {
     }
   }
 
-  Rectangle {
-    id: imminentRainDot
+  // Small blue dot on the pill when rain is likely in the next hours.
+  RainDot {
     visible: root.hasImminentRain
-    enabled: false
-    width: Style.space(6)
-    height: Style.space(6)
-    radius: width / 2
-    color: "#38bdf8"
-    border.width: 1
-    border.color: Qt.rgba(0, 0, 0, 0.35)
     anchors.top: parent.top
-    anchors.topMargin: Style.space(4)
     anchors.right: parent.right
-    anchors.rightMargin: Style.space(4)
-    z: 10
   }
 }

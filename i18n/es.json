@@ -1,0 +1,16 @@
+{
+  "weather.feels": "SENSACIÓN",
+  "weather.fetching": "Obteniendo el pronóstico…",
+  "weather.humid": "HUMEDAD",
+  "weather.noRainToday": "Sin lluvia prevista hoy",
+  "weather.now": "Ahora",
+  "weather.openRadar": "Abrir radar en vivo",
+  "weather.rainAround": "Lluvia prevista hacia las %1",
+  "weather.rainAroundOne": "Lluvia prevista hacia la %1",
+  "weather.rainNow": "Lloviendo ahora",
+  "weather.searchCity": "Buscar ciudad",
+  "weather.sunrise": "AMANECER",
+  "weather.sunset": "ATARDECER",
+  "weather.uv": "ÍNDICE UV",
+  "weather.wind": "VIENTO"
+}

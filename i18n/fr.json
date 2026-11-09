@@ -1,0 +1,15 @@
+{
+  "weather.feels": "RESSENTI",
+  "weather.fetching": "Récupération des prévisions…",
+  "weather.humid": "HUMIDITÉ",
+  "weather.noRainToday": "Pas de pluie prévue aujourd’hui",
+  "weather.now": "Maintenant",
+  "weather.openRadar": "Ouvrir le radar en direct",
+  "weather.rainAround": "Pluie prévue vers %1",
+  "weather.rainNow": "Pluie en ce moment",
+  "weather.searchCity": "Rechercher une ville",
+  "weather.sunrise": "LEVER",
+  "weather.sunset": "COUCHER",
+  "weather.uv": "INDICE UV",
+  "weather.wind": "VENT"
+}

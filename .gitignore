@@ -1,3 +1,9 @@
+# Never commit installed packages or caches (the tests need none)
+node_modules/
+.cache/
+coverage/
+*.log
+
 # Editors / OS
 .DS_Store
 .idea/

@@ -1,0 +1,15 @@
+{
+  "weather.feels": "FEELS",
+  "weather.fetching": "Fetching forecast…",
+  "weather.humid": "HUMID",
+  "weather.noRainToday": "No rain expected today",
+  "weather.now": "Now",
+  "weather.openRadar": "Open live radar",
+  "weather.rainAround": "Rain expected around %1",
+  "weather.rainNow": "Rain right now",
+  "weather.searchCity": "Search city",
+  "weather.sunrise": "SUNRISE",
+  "weather.sunset": "SUNSET",
+  "weather.uv": "UV INDEX",
+  "weather.wind": "WIND"
+}

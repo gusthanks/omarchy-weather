@@ -1,0 +1,15 @@
+{
+  "weather.feels": "GEFÜHLT",
+  "weather.fetching": "Vorhersage wird geladen…",
+  "weather.humid": "FEUCHTE",
+  "weather.noRainToday": "Heute kein Regen erwartet",
+  "weather.now": "Jetzt",
+  "weather.openRadar": "Live-Radar öffnen",
+  "weather.rainAround": "Regen erwartet gegen %1",
+  "weather.rainNow": "Gerade Regen",
+  "weather.searchCity": "Stadt suchen",
+  "weather.sunrise": "AUFGANG",
+  "weather.sunset": "UNTERGANG",
+  "weather.uv": "UV-INDEX",
+  "weather.wind": "WIND"
+}

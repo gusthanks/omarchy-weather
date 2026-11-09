@@ -2,9 +2,10 @@
   "schemaVersion": 1,
   "id": "gusthx.weather",
   "name": "Weather Plus",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Gustavo Costa",
-  "description": "Lightweight weather pill with rain forecast, hourly strip, UV, sunrise/sunset and live radar link",
+  "license": "MIT",
+  "description": "Weather pill and popup with a rain summary, hourly rain-chance strip, UV index, sunrise/sunset and a live radar link. No API key, no map tiles.",
   "kinds": [
     "bar-widget"
   ],
@@ -13,10 +14,15 @@
   },
   "barWidget": {
     "displayName": "Weather Plus",
-    "description": "Weather pill with detail popup, rain summary and hourly forecast",
+    "description": "Weather pill with a detail popup: rain summary, hourly rain chances, UV, sunrise/sunset and a radar link.",
     "category": "Info",
     "allowMultiple": false,
-    "settingsForm": "weatherSettings"
+    "settingsForm": "weatherSettings",
+    "aliases": [
+      "weather",
+      "rain",
+      "forecast"
+    ]
   },
   "omarchy": {
     "clonedFrom": "omarchy.weather"

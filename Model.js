@@ -286,15 +286,16 @@ function iconForCode(code, night) {
   }
 }
 
-function nowLabel(lang) {
-  if (!lang) return "Now";
-  var l = String(lang).toLowerCase();
-  if (l.indexOf("pt") === 0) return "Agora";
-  if (l.indexOf("es") === 0) return "Ahora";
-  if (l.indexOf("fr") === 0) return "Maintenant";
-  if (l.indexOf("de") === 0) return "Jetzt";
-  if (l.indexOf("it") === 0) return "Ora";
-  return "Now";
+// Strings come from the plugin catalog (i18n/*.json) through the panel's
+// tr(key, fallback), passed in as `tr`. Without one the English fallback is
+// used.
+function translate(tr, key, fallback) {
+  var value = typeof tr === "function" ? tr(key, fallback) : fallback;
+  return (typeof value === "string" && value !== "" && value !== key) ? value : fallback;
+}
+
+function nowLabel(tr) {
+  return translate(tr, "weather.now", "Now");
 }
 
 function formatHour(timeStr, lang) {
@@ -313,7 +314,7 @@ function formatHour(timeStr, lang) {
   return (hourNum < 10 ? "0" + hourNum : hourNum) + ":00";
 }
 
-function openMeteoHourlyForecast(dailyForecastReport, maxCount, language) {
+function openMeteoHourlyForecast(dailyForecastReport, maxCount, language, tr) {
   var hourly = dailyForecastReport && dailyForecastReport.hourly ? dailyForecastReport.hourly : null;
   if (!hourly || !hourly.time || hourly.time.length === 0) return [];
 
@@ -322,7 +323,7 @@ function openMeteoHourlyForecast(dailyForecastReport, maxCount, language) {
   var result = [];
   var foundCurrent = false;
   var lang = language || "en";
-  var labelNow = nowLabel(lang);
+  var labelNow = nowLabel(tr);
 
   for (var i = 0; i < hourly.time.length && result.length < countLimit; ++i) {
     var t = String(hourly.time[i] || "");
@@ -500,13 +501,10 @@ function extractUvIndex(report, dailyForecastReport) {
   return (n % 1 === 0) ? String(Math.round(n)) : n.toFixed(1);
 }
 
-function computeRainSummary(hourlyList, lang, useImperial) {
+function computeRainSummary(hourlyList, tr, useImperial) {
   if (!hourlyList || !hourlyList.length) {
     return { text: "", hasRain: false, icon: "󰖌" };
   }
-
-  var l = String(lang || "en").toLowerCase();
-  var isPt = l.indexOf("pt") === 0;
 
   var current = hourlyList[0];
   var currentProb = Number(current.precipitationProbability) || 0;
@@ -517,7 +515,7 @@ function computeRainSummary(hourlyList, lang, useImperial) {
   if (isCurrentRaining) {
     var precipStr = formatPrecipitation(currentMm, useImperial);
     var detail = currentProb > 0 ? (precipStr ? "(" + currentProb + "% · ~" + precipStr + ")" : "(" + currentProb + "%)") : "";
-    var title = isPt ? "Chuva agora" : "Rain right now";
+    var title = translate(tr, "weather.rainNow", "Rain right now");
     return {
       text: detail ? title + " " + detail : title,
       hasRain: true,
@@ -535,14 +533,11 @@ function computeRainSummary(hourlyList, lang, useImperial) {
     if (isRain) {
       var pStr = formatPrecipitation(mm, useImperial);
       var pDetail = prob > 0 ? (pStr ? "(" + prob + "% · ~" + pStr + ")" : "(" + prob + "%)") : "";
-      var prefix = "";
-      if (isPt) {
-        var hStr = String(h.hourLabel || "");
-        var art = (hStr === "1h" || hStr === "01h" || hStr === "1:00" || hStr === "01:00") ? "da " : "das ";
-        prefix = "Chuva prevista por volta " + art + hStr;
-      } else {
-        prefix = "Rain expected around " + h.hourLabel;
-      }
+      // Some languages word "around 1 o'clock" differently ("por volta da 1h").
+      var around = translate(tr, "weather.rainAround", "Rain expected around %1");
+      if (parseInt(String(h.time || "").slice(11, 13), 10) === 1)
+        around = translate(tr, "weather.rainAroundOne", around);
+      var prefix = around.replace("%1", String(h.hourLabel || ""));
       return {
         text: pDetail ? prefix + " " + pDetail : prefix,
         hasRain: true,
@@ -552,7 +547,7 @@ function computeRainSummary(hourlyList, lang, useImperial) {
   }
 
   return {
-    text: isPt ? "Sem previsão de chuva hoje" : "No rain expected today",
+    text: translate(tr, "weather.noRainToday", "No rain expected today"),
     hasRain: false,
     icon: "󰖙"
   };
@@ -575,9 +570,13 @@ function checkImminentRain(hourlyList) {
   return false;
 }
 
-function imminentRainDescription(hourlyList, lang, useImperial) {
-  var summary = computeRainSummary(hourlyList, lang, useImperial);
-  return summary && summary.text ? summary.text : "";
+// RainViewer's live map, centred on the place when its coordinates are known.
+function radarUrl(latitude, longitude) {
+  var base = "https://www.rainviewer.com/weather-radar-map-live.html";
+  var lat = parseFloat(String(latitude));
+  var lon = parseFloat(String(longitude));
+  if (latitude === null || longitude === null || isNaN(lat) || isNaN(lon)) return base;
+  return base + "?loc=" + encodeURIComponent(String(latitude)) + "," + encodeURIComponent(String(longitude)) + ",8";
 }
 
 if (typeof module !== "undefined") {
@@ -609,6 +608,9 @@ if (typeof module !== "undefined") {
     iconForOpenMeteoCode: iconForOpenMeteoCode,
     iconForCode: iconForCode,
     openMeteoHourlyForecast: openMeteoHourlyForecast,
+    nowLabel: nowLabel,
+    formatHour: formatHour,
+    translate: translate,
     formatPrecipitation: formatPrecipitation,
     extractTodayHighLow: extractTodayHighLow,
     formatSunTime: formatSunTime,
@@ -616,6 +618,6 @@ if (typeof module !== "undefined") {
     extractUvIndex: extractUvIndex,
     computeRainSummary: computeRainSummary,
     checkImminentRain: checkImminentRain,
-    imminentRainDescription: imminentRainDescription
+    radarUrl: radarUrl
   }
 }

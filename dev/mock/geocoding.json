@@ -1,0 +1,25 @@
+{
+ "results": [
+  {
+   "name": "Lisbon",
+   "latitude": 38.72,
+   "longitude": -9.14,
+   "admin1": "Lisbon",
+   "country": "Portugal"
+  },
+  {
+   "name": "Lisburn",
+   "latitude": 54.51,
+   "longitude": -6.04,
+   "admin1": "Northern Ireland",
+   "country": "United Kingdom"
+  },
+  {
+   "name": "Lisbon",
+   "latitude": 44.03,
+   "longitude": -70.1,
+   "admin1": "Maine",
+   "country": "United States"
+  }
+ ]
+}

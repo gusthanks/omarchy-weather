@@ -1,0 +1,15 @@
+{
+  "weather.feels": "PERCEPITA",
+  "weather.fetching": "Recupero previsioni…",
+  "weather.humid": "UMIDITÀ",
+  "weather.noRainToday": "Nessuna pioggia prevista oggi",
+  "weather.now": "Ora",
+  "weather.openRadar": "Apri il radar in diretta",
+  "weather.rainAround": "Pioggia prevista verso le %1",
+  "weather.rainNow": "Pioggia in corso",
+  "weather.searchCity": "Cerca città",
+  "weather.sunrise": "ALBA",
+  "weather.sunset": "TRAMONTO",
+  "weather.uv": "INDICE UV",
+  "weather.wind": "VENTO"
+}
