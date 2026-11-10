@@ -9,6 +9,7 @@
 #   dev/run.sh dry          docs/panel-dry.png     (no rain today)
 #   dev/run.sh search       docs/panel-search.png  (location search with suggestions)
 #   dev/run.sh bar          docs/bar.png           (the pill with the rain dot)
+#   dev/run.sh gif          docs/demo.gif          (scripted demo, ~10 s, needs ffmpeg)
 #   dev/run.sh docs         all of the captures above
 #   dev/run.sh check        compile every plugin type, Panel.qml and BarWidget.qml
 #                           included (declared, never instantiated); run before deploy
@@ -55,6 +56,26 @@ render() { # mode out
   [ -f "$2" ] && echo "${2#"$repo"/}" || { echo "no image written for $1 (log: $log)" >&2; return 1; }
 }
 
+gif() {
+  local frames="$cfg/frames"
+  rm -rf "$frames"; mkdir -p "$frames"
+  local log="$cfg/gif.log"
+  local platform=()
+  [ "$HEADLESS" = 1 ] && platform=(env QT_QPA_PLATFORM=offscreen QT_SCALE_FACTOR="${DEV_SCALE:-1.6}")
+  MODE=gif OUT="$frames" timeout 600 "${platform[@]}" quickshell -n -p "$cfg/shell.qml" >"$log" 2>&1 || true
+  local noise='qmlscanner|portal|polkit|QT_QPA_PLATFORM|actually running wayland|window masks|--- WARNING ---|No PanelWindow backend|toplevel-mapping'
+  if grep -aE 'WARN|ERROR' "$log" | grep -vE "$noise" | grep -q .; then
+    grep -aE 'WARN|ERROR' "$log" | grep -vE "$noise" >&2
+  fi
+  [ -s "$frames/list.txt" ] || { echo "no frames written (log: $log)" >&2; return 1; }
+  # The concat demuxer stretches the last entry; cut the output at the listed length.
+  local length; length=$(awk '$1 == "duration" { s += $2 } END { print s }' "$frames/list.txt")
+  ffmpeg -loglevel error -y -f concat -i "$frames/list.txt" -t "$length" \
+    -vf "fps=10,scale=560:-1:flags=lanczos,split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle" \
+    "$repo/docs/demo$suffix.gif"
+  echo "docs/demo$suffix.gif ($(ls "$frames"/*.png | wc -l) distinct frames, $(du -k "$repo/docs/demo$suffix.gif" | cut -f1) KB)"
+}
+
 mkdir -p "$repo/docs"
 case "${1:-preview}" in
   preview) MODE=preview quickshell -n -p "$cfg/shell.qml" ;;
@@ -62,7 +83,8 @@ case "${1:-preview}" in
   dry)     render dry    "$repo/docs/panel-dry$suffix.png" ;;
   search)  render search "$repo/docs/panel-search$suffix.png" ;;
   bar)     render bar    "$repo/docs/bar$suffix.png" ;;
-  docs)    for m in panel dry search bar; do "$0" "$m"; done ;;
+  gif)     gif ;;
+  docs)    for m in panel dry search bar gif; do "$0" "$m"; done ;;
   test)    node --test "$repo/dev/tests/" ;;
   check)
     # Compile-only: types are declared inside Components that never get created,
@@ -78,5 +100,5 @@ case "${1:-preview}" in
     grep -a 'CHECK ' "$cfg/check.log" | sed 's/^.*CHECK /CHECK /'
     grep -a 'CHECK ' "$cfg/check.log" | grep -q . || { echo "check produced no output (log: $cfg/check.log)" >&2; exit 1; }
     ! grep -a 'CHECK ' "$cfg/check.log" | grep -vq ' OK$' ;;
-  *) sed -n '2,24p' "$0"; exit 1 ;;
+  *) sed -n '2,25p' "$0"; exit 1 ;;
 esac

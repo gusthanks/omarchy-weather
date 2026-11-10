@@ -11,6 +11,7 @@ Flickable {
   // Panel.qml (or the dev harness mock): data, strings and actions.
   required property var weather
   property alias locationField: locationField
+  property alias hourlyStrip: hourlyFlick
   readonly property real contentImplicitHeight: weatherColumn.implicitHeight
 
   contentWidth: width

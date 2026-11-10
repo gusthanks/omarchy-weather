@@ -30,7 +30,8 @@ dev/run.sh panel     # docs/panel.png         rain expected this afternoon
 dev/run.sh dry       # docs/panel-dry.png     no rain today
 dev/run.sh search    # docs/panel-search.png  location search with suggestions
 dev/run.sh bar       # docs/bar.png           the pill with the imminent-rain dot
-dev/run.sh docs      # all four captures
+dev/run.sh gif       # docs/demo.gif          scripted demo (rain, hourly scroll, search, dry day; needs ffmpeg)
+dev/run.sh docs      # all of the captures above
 dev/run.sh preview   # the popup content in a window
 LANGUAGE=pt-BR dev/run.sh panel   # any capture in another language (docs/<name>-pt-BR.png)
 ```
