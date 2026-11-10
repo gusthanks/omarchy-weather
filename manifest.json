@@ -3,7 +3,7 @@
   "id": "gusthx.weather",
   "name": "Weather Plus",
   "version": "1.2.0",
-  "author": "Gustavo Costa",
+  "author": "Gustavo Costa (gusthx)",
   "license": "MIT",
   "description": "Weather pill and popup with a rain summary, hourly rain-chance strip, UV index, sunrise/sunset and a live radar link. No API key, no map tiles.",
   "kinds": [
