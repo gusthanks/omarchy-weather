@@ -1,5 +1,7 @@
 # Weather Plus for Omarchy
 
+**English** · [Português (Brasil)](README.pt-BR.md)
+
 A richer, still lightweight weather widget for the [Omarchy](https://omarchy.org) bar:
 a rain summary, an hourly strip with rain chances, UV index, sunrise and sunset, and a
 link to a live radar. It answers the question you open a weather widget for: *will it
@@ -8,9 +10,11 @@ rain, when, and how much?*
 Weather Plus is built on Omarchy's stock weather widget (`omarchy.weather`, MIT) and keeps
 its look, its location search and its keyboard behavior.
 
-<p align="center"><img src="docs/panel.png" width="560" alt="The Weather Plus popup: current conditions, a stats grid, a rain banner, an hourly strip with rain bars, three days ahead and a radar link"></p>
+<p align="center"><img src="docs/demo.gif" width="560" alt="Demo: the popup with a rain banner, the hourly strip scrolled sideways, a location search for Lisbon, then a dry day"></p>
 
 ## What you get
+
+<p align="center"><img src="docs/panel.png" width="560" alt="The Weather Plus popup: current conditions, a stats grid, a rain banner, an hourly strip with rain bars, three days ahead and a radar link"></p>
 
 - **Rain summary banner**: one line that says it all, such as *Rain right now (72%)*,
   *Rain expected around 4 PM (65% · ~0.4 mm)* or *No rain expected today*.
@@ -37,7 +41,7 @@ its look, its location search and its keyboard behavior.
 </p>
 <p align="center"><img src="docs/bar.png" width="300" alt="The bar icon with the blue imminent-rain dot"></p>
 
-*(Screenshots are rendered from mock data by the dev harness, see
+*(Screenshots and the demo GIF are rendered from mock data by the dev harness, see
 [Development](#development).)*
 
 ### Light by design
@@ -130,7 +134,8 @@ location. Captures render offscreen, so nothing shows on screen.
 ```bash
 dev/run.sh check     # compile every QML type, Panel.qml and BarWidget.qml included
 dev/run.sh test      # Model.js and i18n catalog tests (node --test, no npm packages)
-dev/run.sh docs      # docs/panel.png, panel-dry.png, panel-search.png, bar.png
+dev/run.sh docs      # docs/panel.png, panel-dry.png, panel-search.png, bar.png, demo.gif
+dev/run.sh gif       # docs/demo.gif only (scripted demo, needs ffmpeg)
 dev/run.sh preview   # the popup content in a window, to play with
 LANGUAGE=pt-BR dev/run.sh panel   # docs/panel-pt-BR.png
 omarchy plugin validate .
@@ -152,6 +157,10 @@ If the live folder is a plain copy rather than a git checkout, `deploy.sh` first
 `~/Work/backups/gusthx.weather.<timestamp>` and replaces it with a checkout of this repo.
 See [AGENTS.md](AGENTS.md) for the rules AI agents (and humans) follow here.
 
+## Changes
+
+See [CHANGELOG.md](CHANGELOG.md).
+
 ## Credits
 
 Based on Omarchy's stock weather widget. Forecast data by
@@ -160,4 +169,5 @@ Based on Omarchy's stock weather widget. Forecast data by
 
 ## License
 
-[MIT](LICENSE) © Gustavo Costa
+MIT. See [LICENSE](LICENSE). Copyright (c) 2026 Gustavo Costa (gusthx); the parts that come
+from Omarchy's stock weather widget are Copyright (c) David Heinemeier Hansson.
