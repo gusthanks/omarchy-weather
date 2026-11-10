@@ -69,7 +69,7 @@ of a task.
   test checks this).
 - `WeatherView.qml` reads everything from its `weather` object. A property or action added
   to `Panel.qml` for the view must be added to `dev/MockWeather.qml` too.
-- Keep the bar widget cheap (the user's machine is an older laptop): no images or map
+- Keep the bar widget cheap (it must stay light on older laptops): no images or map
   tiles, no timers faster than the refresh, no new requests per refresh (today: Open-Meteo
   and wttr.in).
 - Mock data only in the harness and tests: never the user's location, config or accounts.
